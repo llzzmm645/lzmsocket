@@ -1,0 +1,254 @@
+<!DOCTYPE html>
+        <html>
+        <head>
+            <meta charset="UTF-8">
+            <title>lzmsocket&period;h &#x4f7f;&#x7528;&#x6307;&#x5357;</title>
+            <style>
+/* From extension vscode.github */
+/*---------------------------------------------------------------------------------------------
+ *  Copyright (c) Microsoft Corporation. All rights reserved.
+ *  Licensed under the MIT License. See License.txt in the project root for license information.
+ *--------------------------------------------------------------------------------------------*/
+
+.vscode-dark img[src$=\#gh-light-mode-only],
+.vscode-light img[src$=\#gh-dark-mode-only] {
+	display: none;
+}
+
+</style>
+            
+        <link rel="stylesheet" href="https://cdn.jsdelivr.net/gh/Microsoft/vscode/extensions/markdown-language-features/media/markdown.css">
+<link rel="stylesheet" href="https://cdn.jsdelivr.net/gh/Microsoft/vscode/extensions/markdown-language-features/media/highlight.css">
+<style>
+            body {
+                font-family: -apple-system, BlinkMacSystemFont, 'Segoe WPC', 'Segoe UI', system-ui, 'Ubuntu', 'Droid Sans', sans-serif;
+                font-size: 14px;
+                line-height: 1.6;
+            }
+        </style>
+        <style>
+.task-list-item {
+    list-style-type: none;
+}
+
+.task-list-item-checkbox {
+    margin-left: -20px;
+    vertical-align: middle;
+    pointer-events: none;
+}
+</style>
+<style>
+:root {
+  --color-note: #0969da;
+  --color-tip: #1a7f37;
+  --color-warning: #9a6700;
+  --color-severe: #bc4c00;
+  --color-caution: #d1242f;
+  --color-important: #8250df;
+}
+
+</style>
+<style>
+@media (prefers-color-scheme: dark) {
+  :root {
+    --color-note: #2f81f7;
+    --color-tip: #3fb950;
+    --color-warning: #d29922;
+    --color-severe: #db6d28;
+    --color-caution: #f85149;
+    --color-important: #a371f7;
+  }
+}
+
+</style>
+<style>
+.markdown-alert {
+  padding: 0.5rem 1rem;
+  margin-bottom: 16px;
+  color: inherit;
+  border-left: .25em solid #888;
+}
+
+.markdown-alert>:first-child {
+  margin-top: 0
+}
+
+.markdown-alert>:last-child {
+  margin-bottom: 0
+}
+
+.markdown-alert .markdown-alert-title {
+  display: flex;
+  font-weight: 500;
+  align-items: center;
+  line-height: 1
+}
+
+.markdown-alert .markdown-alert-title .octicon {
+  margin-right: 0.5rem;
+  display: inline-block;
+  overflow: visible !important;
+  vertical-align: text-bottom;
+  fill: currentColor;
+}
+
+.markdown-alert.markdown-alert-note {
+  border-left-color: var(--color-note);
+}
+
+.markdown-alert.markdown-alert-note .markdown-alert-title {
+  color: var(--color-note);
+}
+
+.markdown-alert.markdown-alert-important {
+  border-left-color: var(--color-important);
+}
+
+.markdown-alert.markdown-alert-important .markdown-alert-title {
+  color: var(--color-important);
+}
+
+.markdown-alert.markdown-alert-warning {
+  border-left-color: var(--color-warning);
+}
+
+.markdown-alert.markdown-alert-warning .markdown-alert-title {
+  color: var(--color-warning);
+}
+
+.markdown-alert.markdown-alert-tip {
+  border-left-color: var(--color-tip);
+}
+
+.markdown-alert.markdown-alert-tip .markdown-alert-title {
+  color: var(--color-tip);
+}
+
+.markdown-alert.markdown-alert-caution {
+  border-left-color: var(--color-caution);
+}
+
+.markdown-alert.markdown-alert-caution .markdown-alert-title {
+  color: var(--color-caution);
+}
+
+</style>
+        
+        </head>
+        <body class="vscode-body vscode-light">
+            <h1 id="lzmsocketh-使用指南">lzmsocket.h 使用指南</h1>
+<h2 id="前置知识">前置知识</h2>
+<p>地址：IP地址、或者是域名</p>
+<p>端口：0~65535的一个数字</p>
+<p>注意：</p>
+<ul>
+<li>
+<p>若函数返回套接字类型，则失败时会返回-1；
+若函数返回布尔类型，则成功时返回true，失败时会返回false</p>
+</li>
+<li>
+<p>编译时请加上参数 <code>-lws2_32</code></p>
+</li>
+<li>
+<p>请先运行服务端，再运行客户端</p>
+</li>
+</ul>
+<h2 id="服务器端和客户端共用函数">服务器端和客户端共用函数</h2>
+<pre><code class="language-c++"><span class="hljs-function">SOCKET <span class="hljs-title">init</span><span class="hljs-params">()</span></span>;
+</code></pre>
+<p>该函数无参数，用于初始化套接字（<strong>必须在所有函数之前运行</strong>）</p>
+<p>会返回服务器端或客户端套接字</p>
+<hr>
+<pre><code class="language-c++"><span class="hljs-function"><span class="hljs-type">bool</span> <span class="hljs-title">sendmsg</span><span class="hljs-params">(SOCKET s, <span class="hljs-type">char</span> buf[], <span class="hljs-type">int</span> size)</span></span>;
+</code></pre>
+<p>该函数有三个参数，分别是对方的套接字，传输的数据缓冲区，缓冲区长度（可以通过sizeof(缓冲区)获取）</p>
+<p>该函数将一段消息发送至另一端</p>
+<hr>
+<pre><code class="language-c++"><span class="hljs-function"><span class="hljs-type">bool</span> <span class="hljs-title">getmsg</span><span class="hljs-params">(SOCKET s, <span class="hljs-type">char</span> buf[], <span class="hljs-type">int</span> size)</span></span>;
+</code></pre>
+<p>参数定义详见sendmsg函数</p>
+<p>该函数获取另一端发来的消息</p>
+<hr>
+<pre><code class="language-c++"><span class="hljs-function"><span class="hljs-type">int</span> <span class="hljs-title">closesocket</span><span class="hljs-params">(SOCKET s)</span></span>;
+</code></pre>
+<p>该函数有一个参数，将要关闭的套接字</p>
+<p>该函数关闭套接字</p>
+<hr>
+<pre><code class="language-c++"><span class="hljs-function"><span class="hljs-type">bool</span> <span class="hljs-title">cleansocket</span><span class="hljs-params">()</span></span>;
+</code></pre>
+<p>该函数清理windows套接字资源（<strong>必须在所有套接字关闭之后运行</strong>）</p>
+<hr>
+<pre><code class="language-c++"><span class="hljs-function"><span class="hljs-type">int</span> <span class="hljs-title">getlasterror</span><span class="hljs-params">()</span></span>;
+</code></pre>
+<p>该函数获取运行错误的原因</p>
+<h2 id="服务器端">服务器端</h2>
+<pre><code class="language-c++"><span class="hljs-function"><span class="hljs-type">bool</span> <span class="hljs-title">init_server</span><span class="hljs-params">(SOCKET s,<span class="hljs-type">int</span> port)</span></span>;
+</code></pre>
+<p>该函数有两个参数，分别是服务器端套接字以及端口号</p>
+<p>该函数将某一端口绑定至套接字</p>
+<hr>
+<pre><code class="language-c++"><span class="hljs-function">SOCKET <span class="hljs-title">getclient</span><span class="hljs-params">(SOCKET s,SOCKADDR_IN *client_addr)</span></span>;
+</code></pre>
+<p>该函数有两个参数，分别是服务器端套接字以及客户端地址类型所存入的地址</p>
+<p>会返回连接至服务器的客户端套接字</p>
+<h2 id="客户端">客户端</h2>
+<pre><code class="language-c++"><span class="hljs-function"><span class="hljs-type">bool</span> <span class="hljs-title">connect_server</span><span class="hljs-params">(SOCKET s, <span class="hljs-type">char</span> addr[], <span class="hljs-type">int</span> port)</span>
+</span></code></pre>
+<p>该函数有三个参数，分别是客户端套接字、服务器地址与端口</p>
+<p>该函数将客户端连接至服务端</p>
+<h2 id="示例程序">示例程序</h2>
+<p>服务器端：</p>
+<pre><code class="language-c++"><span class="hljs-meta">#<span class="hljs-keyword">include</span> <span class="hljs-string">&quot;lzmsocket.h&quot;</span></span>
+<span class="hljs-meta">#<span class="hljs-keyword">include</span> <span class="hljs-string">&lt;stdio.h&gt;</span></span>
+<span class="hljs-function"><span class="hljs-type">int</span> <span class="hljs-title">main</span><span class="hljs-params">()</span></span>{
+    SOCKET s=<span class="hljs-built_in">init</span>();
+    <span class="hljs-keyword">if</span>(s==SOCKET_ERROR){
+        <span class="hljs-built_in">printf</span>(<span class="hljs-string">&quot;Error&quot;</span>);
+        <span class="hljs-built_in">cleansocket</span>();
+        <span class="hljs-keyword">return</span> <span class="hljs-number">0</span>;
+    }
+    <span class="hljs-keyword">if</span>(!<span class="hljs-built_in">init_server</span>(s,<span class="hljs-number">8080</span>)){
+        <span class="hljs-built_in">printf</span>(<span class="hljs-string">&quot;Error&quot;</span>);
+        <span class="hljs-built_in">closesocket</span>(s);
+        <span class="hljs-built_in">cleansocket</span>();
+        <span class="hljs-keyword">return</span> <span class="hljs-number">0</span>;
+    }
+    SOCKADDR_IN caddr;
+    SOCKET c=<span class="hljs-built_in">getclient</span>(s,&amp;caddr);
+    <span class="hljs-keyword">if</span>(c==INVALID_SOCKET){
+        <span class="hljs-built_in">printf</span>(<span class="hljs-string">&quot;Error&quot;</span>);
+        <span class="hljs-built_in">closesocket</span>(s);
+        <span class="hljs-built_in">cleansocket</span>();
+        <span class="hljs-keyword">return</span> <span class="hljs-number">0</span>;
+    }
+    <span class="hljs-type">char</span> buf[]=<span class="hljs-string">&quot;this is a test&quot;</span>;
+    <span class="hljs-built_in">sendmsg</span>(c,buf,<span class="hljs-built_in">sizeof</span>(buf));
+    <span class="hljs-built_in">printf</span>(<span class="hljs-string">&quot;OK&quot;</span>);
+    <span class="hljs-built_in">closesocket</span>(s);
+    <span class="hljs-built_in">closesocket</span>(c);
+    <span class="hljs-built_in">cleansocket</span>();
+    <span class="hljs-keyword">return</span> <span class="hljs-number">0</span>;
+}
+</code></pre>
+<p>客户端：</p>
+<pre><code class="language-c++"><span class="hljs-meta">#<span class="hljs-keyword">include</span> <span class="hljs-string">&quot;_socket.h&quot;</span></span>
+<span class="hljs-meta">#<span class="hljs-keyword">include</span> <span class="hljs-string">&lt;stdio.h&gt;</span></span>
+<span class="hljs-function"><span class="hljs-type">int</span> <span class="hljs-title">main</span><span class="hljs-params">()</span></span>{
+    SOCKET s=<span class="hljs-built_in">init</span>();
+    <span class="hljs-keyword">if</span>(!<span class="hljs-built_in">connect_server</span>(s,<span class="hljs-string">&quot;127.0.0.1&quot;</span>,<span class="hljs-number">8080</span>)){
+        <span class="hljs-built_in">printf</span>(<span class="hljs-string">&quot;Error&quot;</span>);
+        <span class="hljs-keyword">return</span> <span class="hljs-number">0</span>;
+    }
+    <span class="hljs-type">char</span> buf[<span class="hljs-number">80</span>]={<span class="hljs-number">0</span>};
+    <span class="hljs-built_in">getmsg</span>(s,buf,<span class="hljs-built_in">sizeof</span>(buf));
+    <span class="hljs-built_in">printf</span>(<span class="hljs-string">&quot;%s&quot;</span>,buf);
+    <span class="hljs-built_in">closesocket</span>(s);
+    <span class="hljs-built_in">cleansocket</span>();
+    <span class="hljs-keyword">return</span> <span class="hljs-number">0</span>;
+}
+</code></pre>
+
+            
+            
+        </body>
+        </html>
