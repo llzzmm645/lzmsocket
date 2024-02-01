@@ -142,7 +142,7 @@ int main(){
 客户端：
 
 ``` c++
-#include "_socket.h"
+#include "lzmsocket.h"
 #include <stdio.h>
 int main(){
     SOCKET s=init();
